@@ -128,6 +128,7 @@ class AppointmentOut(BaseModel):
 
 ### P4. Paciente vê consultas canceladas?
 **Default:** Sim — aba "Histórico" mostra realizadas, canceladas e no_show.
+R: O paciente consegue visualizar apenas o próprio histórico de consultas. Já a recepcionista possui acesso ao histórico geral, incluindo consultas realizadas, canceladas e no-show.
 
 ### P5. Tela do paciente exibe `doctor_notes`?
 **Default:** Não. Notas clínicas são privadas (médico/recepcionista). Cenário de teste: garantir que API não retorna `doctor_notes` para o paciente.
