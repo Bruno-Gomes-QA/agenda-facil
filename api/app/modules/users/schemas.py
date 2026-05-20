@@ -1,14 +1,14 @@
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 
 
 # ── Entrada ───────────────────────────────────────────────────────────────────
 
 class PatientCreate(BaseModel):
     name: str = Field(min_length=2, max_length=120)
-    email: EmailStr
+    email: str = Field(min_length=5, max_length=160)
     password: str = Field(min_length=6, max_length=128)
     phone: str | None = Field(default=None, max_length=20)
     cpf: str | None = Field(default=None, max_length=14)
@@ -17,14 +17,14 @@ class PatientCreate(BaseModel):
 
 class StaffCreate(BaseModel):
     name: str = Field(min_length=2, max_length=120)
-    email: EmailStr
+    email: str = Field(min_length=5, max_length=160)
     password: str = Field(min_length=6, max_length=128)
     role: Literal["recepcionista", "medico"]
     phone: str | None = Field(default=None, max_length=20)
 
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    email: str = Field(min_length=5, max_length=160)
     password: str
 
 
@@ -33,7 +33,7 @@ class LoginRequest(BaseModel):
 class UserOut(BaseModel):
     id: int
     name: str
-    email: EmailStr
+    email: str
     role: Literal["paciente", "recepcionista", "medico"]
     phone: str | None
     is_active: bool
