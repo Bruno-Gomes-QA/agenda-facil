@@ -1,14 +1,14 @@
 import secrets
 import string
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 
 from app.modules.users.schemas import UserOut
 
 
 class AdminPatientCreate(BaseModel):
     name: str = Field(min_length=2, max_length=120)
-    email: EmailStr
+    email: str = Field(min_length=5, max_length=160)
     password: str | None = Field(default=None, min_length=6, max_length=128)
     phone: str | None = Field(default=None, max_length=20)
     cpf: str | None = Field(default=None, max_length=14)

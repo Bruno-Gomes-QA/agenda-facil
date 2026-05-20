@@ -1,11 +1,11 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 
 from app.modules.specialties.schemas import SpecialtyOut
 
 
 class DoctorCreate(BaseModel):
     name: str = Field(min_length=2, max_length=120)
-    email: EmailStr
+    email: str = Field(min_length=5, max_length=160)
     password: str = Field(min_length=6, max_length=128)
     phone: str | None = Field(default=None, max_length=20)
     specialty_id: int
@@ -33,6 +33,6 @@ class DoctorPublicOut(BaseModel):
 
 
 class DoctorOut(DoctorPublicOut):
-    email: EmailStr
+    email: str
     phone: str | None
     user_id: int
