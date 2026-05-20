@@ -8,6 +8,10 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
 
+  imports: {
+    dirs: ['composables/**'],
+  },
+
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
 
   runtimeConfig: {
