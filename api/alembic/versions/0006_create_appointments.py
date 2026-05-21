@@ -16,8 +16,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute(
-        "CREATE TYPE appointment_status AS ENUM ('agendada', 'cancelada', 'realizada', 'no_show')"
+    appt_status_enum = sa.Enum(
+        "agendada", "cancelada", "realizada", "no_show", name="appointment_status"
     )
 
     op.create_table(
@@ -39,11 +39,7 @@ def upgrade() -> None:
         sa.Column("duration_min", sa.SmallInteger, nullable=False, server_default=sa.text("30")),
         sa.Column(
             "status",
-            sa.Enum(
-                "agendada", "cancelada", "realizada", "no_show",
-                name="appointment_status",
-                create_type=False,
-            ),
+            appt_status_enum,
             nullable=False,
             server_default=sa.text("'agendada'"),
         ),
@@ -119,4 +115,4 @@ def downgrade() -> None:
     op.drop_index("idx_appt_doctor_date", table_name="appointments")
     op.drop_index("idx_appt_patient", table_name="appointments")
     op.drop_table("appointments")
-    op.execute("DROP TYPE appointment_status")
+    sa.Enum(name="appointment_status").drop(op.get_bind(), checkfirst=True)

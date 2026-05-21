@@ -37,7 +37,7 @@ def upgrade() -> None:
         sa.column("name", sa.String),
         sa.column("email", sa.String),
         sa.column("password_hash", sa.String),
-        sa.column("role", sa.String),
+        sa.column("role", sa.Enum("paciente", "recepcionista", "medico", name="user_role", create_type=False)),
         sa.column("phone", sa.String),
         sa.column("is_active", sa.Boolean),
     )

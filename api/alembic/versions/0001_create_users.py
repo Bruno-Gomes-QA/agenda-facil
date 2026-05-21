@@ -17,8 +17,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    # ── ENUMs ────────────────────────────────────────────────────────────────
-    op.execute("CREATE TYPE user_role AS ENUM ('paciente', 'recepcionista', 'medico')")
+    user_role_enum = sa.Enum("paciente", "recepcionista", "medico", name="user_role")
 
     # ── users ─────────────────────────────────────────────────────────────────
     op.create_table(
@@ -27,11 +26,7 @@ def upgrade() -> None:
         sa.Column("name", sa.String(120), nullable=False),
         sa.Column("email", sa.String(160), nullable=False),
         sa.Column("password_hash", sa.String(255), nullable=False),
-        sa.Column(
-            "role",
-            sa.Enum("paciente", "recepcionista", "medico", name="user_role", create_type=False),
-            nullable=False,
-        ),
+        sa.Column("role", user_role_enum, nullable=False),
         sa.Column("phone", sa.String(20), nullable=True),
         sa.Column("is_active", sa.Boolean, nullable=False, server_default=sa.text("true")),
         sa.Column(
@@ -68,4 +63,4 @@ def upgrade() -> None:
 def downgrade() -> None:
     op.drop_table("patients")
     op.drop_table("users")
-    op.execute("DROP TYPE user_role")
+    sa.Enum(name="user_role").drop(op.get_bind(), checkfirst=True)
